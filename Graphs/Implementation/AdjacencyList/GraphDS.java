@@ -1,9 +1,6 @@
 package DSA_Java.Graphs.Implementation.AdjacencyList;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class GraphDS {
 
@@ -124,6 +121,78 @@ public class GraphDS {
         }
 
         return components;
+    }
+
+    /**
+     * Calculate the shortestPath in unweighted graph
+     * @param src starting node
+     * @param destination destination node
+     * @return shortestPath
+     */
+    public int shortestPathInUnweighted(int src,int destination){
+
+        Queue<Integer> queue=new LinkedList<>();
+        HashMap<Integer,Boolean> visited=new HashMap<>();
+
+        int[] distance=new int[this.v+1];
+        int[] parent=new int[this.v+1];
+
+        Arrays.fill(parent,-1);
+        visited.put(src,true);
+        queue.add(src);
+
+        while (!queue.isEmpty()){
+            int node=queue.poll();
+
+            for(int neighbour:this.adjList[node]){
+                if(!visited.containsKey(neighbour)){
+                    queue.add(neighbour);
+                    visited.put(neighbour,true);
+                    distance[neighbour]=distance[node]+1;
+                    parent[neighbour]=node;
+                }
+            }
+        }
+
+        return distance[destination];
+    }
+
+    private boolean bipartiteBFS(int src,int[] colors){
+
+        Queue<Integer> q=new LinkedList<>();
+
+        colors[src]=0;
+        q.add(src);
+
+        while(!q.isEmpty()){
+
+            int node=q.poll();
+
+            for(int neighbour:adjList[node]){
+                if(colors[neighbour]!=-1 && colors[neighbour]==colors[node]){
+                   return false;
+                }
+                if(colors[neighbour]!=-1){
+                    q.add(neighbour);
+                    colors[neighbour]=1-colors[node];
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isBipartite(){
+
+        int[] colors=new int[this.v];
+        Arrays.fill(colors,-1);
+
+        for(int i=0;i<this.v;i++){
+            if(colors[i]==-1){
+                if(!bipartiteBFS(i,colors)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }

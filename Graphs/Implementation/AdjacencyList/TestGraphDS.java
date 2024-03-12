@@ -16,6 +16,7 @@ public class TestGraphDS {
         graph.display();
         System.out.println();
         System.out.println("Connected Components => "+graph.connectedComponents());
+        System.out.println("Is Bipartite : "+ graph.isBipartite());
 
     }
 }
