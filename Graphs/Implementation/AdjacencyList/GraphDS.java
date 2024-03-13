@@ -195,4 +195,41 @@ public class GraphDS {
         return true;
     }
 
+
+    public List<Integer> topologicalSorting(){
+
+        List<Integer> result=new ArrayList<>();
+
+        int[] inDeg=new int[this.v];
+
+        //marking inDeg
+        for(int i=0;i<this.v;i++){
+            for(int neighbour:adjList[i]){
+                inDeg[neighbour]++;
+            }
+        }
+
+        Queue<Integer> queue=new LinkedList<>();
+
+        //adding all the nodes with inDeg=0 in queue
+        for(int i=0;i<this.v;i++){
+            if(inDeg[i]==0) queue.add(i);
+        }
+
+        //BFS Like algo
+        while(!queue.isEmpty()){
+
+            int node=queue.poll();
+            result.add(node);
+
+            for(int neighbour:adjList[node]){
+
+                inDeg[neighbour]--;
+                if(inDeg[neighbour]==0) queue.add(neighbour);
+            }
+
+        }
+        return result;
+    }
+
 }
