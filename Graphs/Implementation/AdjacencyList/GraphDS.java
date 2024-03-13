@@ -229,6 +229,13 @@ public class GraphDS {
             }
 
         }
+
+        if(result.size()!=this.v){
+            //topological sorting is not possible
+            //graph has cycles
+            return new ArrayList<>();
+        }
+        
         return result;
     }
 
